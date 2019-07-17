@@ -204,16 +204,25 @@ void GenFlextangle::TransferTriangle(const cv::Mat& src_img, const std::vector<c
 
 	// Create Map
 	cv::Mat A = cv::getAffineTransform(dst_triangle, src_triangle);
-	cv::Mat dst_pt(3, 1, CV_64FC1);
+	cv::Mat dst_pt(3, h*w, CV_64FC1);
 	cv::Mat map_x(h, w, CV_32FC1), map_y(h, w, CV_32FC1);
-	dst_pt.at<double>(2, 0) = 1;
+	int c = 0;
 	for (int y = 0; y < h; y++) {
-		dst_pt.at<double>(1, 0) = by + y;
 		for (int x = 0; x < w; x++) {
-			dst_pt.at<double>(0, 0) = bx + x;
-			cv::Mat src_pt = A * dst_pt;
-			map_x.at<float>(y, x) = src_pt.at<double>(0, 0);
-			map_y.at<float>(y, x) = src_pt.at<double>(1, 0);
+			dst_pt.at<double>(0, c) = bx + x;
+			dst_pt.at<double>(1, c) = by + y;
+			dst_pt.at<double>(2, c) = 1;
+			c++;
+		}
+	}
+	cv::Mat src_pt = A * dst_pt;
+
+	c = 0;
+	for (int y = 0; y < h; y++) {
+		for (int x = 0; x < w; x++) {
+			map_x.at<float>(y, x) = src_pt.at<double>(0, c);
+			map_y.at<float>(y, x) = src_pt.at<double>(1, c);
+			c++;
 		}
 	}
 

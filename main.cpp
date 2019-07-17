@@ -55,6 +55,20 @@ bool hasImageExtention(const std::string& filename)
 	return hasExtention(filename, ImageExtentions());
 }
 
+void printHowToUse()
+{
+	std::cout << "*******************************************************" << std::endl;
+	std::cout << "This program generate developed figure for flextangle." << std::endl;
+	std::cout << "1. Enter an image file path, then the image is displayed " << std::endl;
+	std::cout << "   in new window." << std::endl;
+	std::cout << "2. Surround image area by a hexagon.  Drag center of " << std::endl;
+	std::cout << "   hexagon to move, and drag corner to rescale and rotate." << std::endl;
+	std::cout << "3. Press enter or space key to select a next image." << std::endl;
+	std::cout << "   Or press ESC or 'q' key to quit program." << std::endl;
+	std::cout << "4. Repeat for 4 images." << std::endl;
+	std::cout << "5. Enter image file name path to save." << std::endl;
+	std::cout << "*******************************************************" << std::endl;
+}
 
 int main(int argc, char * argv[])
 {
@@ -68,6 +82,7 @@ int main(int argc, char * argv[])
 	std::vector<cv::Mat> images;
 	std::vector<std::vector<cv::Point2f> > src_hexagons;
 
+	printHowToUse();
 	std::cout << "Input 4 image path:" << std::endl;
 
 	int count = 0;
