@@ -182,9 +182,7 @@ void GenFlextangle::DrawOutline(cv::Mat& draw_img) const
 void GenFlextangle::TransferTriangle(const cv::Mat& src_img, const std::vector<cv::Point2f>& src_triangle,
 	cv::Mat& dst_img, const std::vector<cv::Point2f>& dst_triangle)
 {
-	cv::Mat tmp_img;
-	cv::Mat A = cv::getAffineTransform(src_triangle, dst_triangle);
-	cv::warpAffine(src_img, tmp_img, A, dst_img.size());
+	// Proc Area 
 	cv::Point2f min_pt = dst_triangle[0], max_pt = dst_triangle[0];
 	for (int i = 1; i < 3; i++) {
 		if (min_pt.x > dst_triangle[i].x)
@@ -196,15 +194,37 @@ void GenFlextangle::TransferTriangle(const cv::Mat& src_img, const std::vector<c
 		if (max_pt.y < dst_triangle[i].y)
 			max_pt.y = dst_triangle[i].y;
 	}
-
 	int bx = (int)(min_pt.x - 0.5);
 	int by = (int)(min_pt.y - 0.5);
 	int ex = (int)(max_pt.x + 0.5);
 	int ey = (int)(max_pt.y + 0.5);
+
+	int w = ex - bx + 1;
+	int h = ey - by + 1;
+
+	// Create Map
+	cv::Mat A = cv::getAffineTransform(dst_triangle, src_triangle);
+	cv::Mat dst_pt(3, 1, CV_64FC1);
+	cv::Mat map_x(h, w, CV_32FC1), map_y(h, w, CV_32FC1);
+	dst_pt.at<double>(2, 0) = 1;
+	for (int y = 0; y < h; y++) {
+		dst_pt.at<double>(1, 0) = by + y;
+		for (int x = 0; x < w; x++) {
+			dst_pt.at<double>(0, 0) = bx + x;
+			cv::Mat src_pt = A * dst_pt;
+			map_x.at<float>(y, x) = src_pt.at<double>(0, 0);
+			map_y.at<float>(y, x) = src_pt.at<double>(1, 0);
+		}
+	}
+
+	// Transform
+	cv::Mat trunc_dst(h, w, CV_8UC3);
+	cv::remap(src_img, trunc_dst, map_x, map_y, cv::INTER_LINEAR);
+	cv::Mat tmp_img;
 	for (int y = by; y <= ey; y++) {
 		for (int x = bx; x <= ex; x++) {
 			if (isInsidePolygon(dst_triangle, cv::Point(x, y))) {
-				dst_img.at<cv::Vec3b>(y, x) = tmp_img.at<cv::Vec3b>(y, x);
+				dst_img.at<cv::Vec3b>(y, x) = trunc_dst.at<cv::Vec3b>(y-by, x-bx);
 			}
 		}
 	}
