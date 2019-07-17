@@ -5,6 +5,10 @@ If you don't know what flextangle is, see some URLs below:
 https://www.easypeasyandfun.com/butterfly-life-cycle-paper-toy/
 https://createartwithme.com/flextangle-steam-art-project/
 
+You need OpenCV library to build this program (3.4 or later).
+I prepared windows10 execution "GenFlextangle.exe" in "GenFlextangle_win_binary.zip", so you can use this program without compile. You need visual studio v15 redistribution package.
+
+How to use:
 1. Enter an image file path, then the image is displayed
    in new window.
 2. Surround image area by a hexagon.  Drag center of

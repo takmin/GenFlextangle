@@ -69,12 +69,12 @@ void GenFlextangle::BindCorners()
 	dev_corner_ids[0][5] = cv::Vec3i(15, 19, 18);
 
 	// 2nd Image
-	dev_corner_ids[1][0] = cv::Vec3i(3, 4, 7);
-	dev_corner_ids[1][1] = cv::Vec3i(7, 10, 9);
-	dev_corner_ids[1][2] = cv::Vec3i(9, 10, 13);
-	dev_corner_ids[1][3] = cv::Vec3i(13, 16, 15);
-	dev_corner_ids[1][4] = cv::Vec3i(15, 16, 19);
-	dev_corner_ids[1][5] = cv::Vec3i(1, 4, 3);
+	dev_corner_ids[1][0] = cv::Vec3i(1, 4, 3);
+	dev_corner_ids[1][1] = cv::Vec3i(3, 4, 7);
+	dev_corner_ids[1][2] = cv::Vec3i(7, 10, 9);
+	dev_corner_ids[1][3] = cv::Vec3i(9, 10, 13);
+	dev_corner_ids[1][4] = cv::Vec3i(13, 16, 15);
+	dev_corner_ids[1][5] = cv::Vec3i(15, 16, 19);
 
 	// 3rd & 4th Image
 	dev_corner_ids[2] = dev_corner_ids[0];

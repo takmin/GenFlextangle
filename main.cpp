@@ -73,7 +73,7 @@ void printHowToUse()
 int main(int argc, char * argv[])
 {
 	///// Parameters ///////
-	cv::Size max_window_size = cv::Size(1024, 1024);
+	cv::Size max_window_size = cv::Size(1024, 768);
 	int output_width = 2048;
 	cv::Point output_offset = cv::Point(40, 40);
 	///////////////////////
@@ -85,13 +85,14 @@ int main(int argc, char * argv[])
 	printHowToUse();
 	std::cout << "Input 4 image path:" << std::endl;
 
+	HexagonSettingWindow hex_window;
 	int count = 0;
 	while(count < 4){
 		std::string img_file = AskQuestionGetString(Int2String(count + 1) + ": ");
 		cv::Mat im = cv::imread(img_file);
 		if (!im.empty()) {
-			HexagonSettingWindow hex_window(im, Int2String(count + 1) + ": " + img_file);
 			hex_window.setMaxWindowSize(max_window_size);
+			hex_window.Open(im, Int2String(count + 1) + ": " + img_file);
 			bool loop = true;
 			while (loop) {
 				// Get user input
@@ -116,6 +117,7 @@ int main(int argc, char * argv[])
 					loop = false;
 				}
 			}
+			hex_window.Close();
 			count++;
 		}
 		else {
